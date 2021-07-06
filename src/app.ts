@@ -40,7 +40,10 @@ dotenv.config();
 const app = express();
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server started on port ${port}`));
 
 app.use(express.json());
+app.get('/', (req, res) => res.send("Push Notification System"))
 app.use('/', require('./api-routes/index'));
+
+app.listen(port, () => console.log(`Server started on port ${port}`));
+module.exports = app;
