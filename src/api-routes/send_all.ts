@@ -1,13 +1,16 @@
 import express from "express";
-import Nexmo from "nexmo";
 import { Device, Platform } from "../models/Device";
 import { User } from "../models/User";
 import { sendApple } from "../services/apns";
 import { sendAndroid } from "../services/gcm";
 import { sendSMS } from "../services/sms";
 
-const Router = express.Router();
+/* this middleware is for authenticating admin */
+// import {auth} from "../middleware/auth"
 
+const Router = express.Router();
+/*Commented line is the representation when middleware is added*/
+// Router.post('/all-platforms', auth, (req, res) => {
 Router.post('/all-platforms', (req, res) => {
     let message: string = req.body.message;
     if(!message){
@@ -30,6 +33,7 @@ Router.post('/all-platforms', (req, res) => {
     })
 })
 
+// Router.post('/SMS', auth, (req, res) => {
 Router.post('/SMS', (req, res) => {
     let message: string = req.body.message;
     if(!message){
@@ -52,6 +56,8 @@ Router.post('/SMS', (req, res) => {
         res.send("Successfully sent bulk messages!");
     });
 })
+
+// Router.post('/android', auth, (req, res) => {
 Router.post('/android', (req, res) => {
     let message: string = req.body.message;
     if(!message){
@@ -72,6 +78,8 @@ Router.post('/android', (req, res) => {
             res.status(401).send("Failed to send bulk notification!");
     })
 })
+
+// Router.post('/apple', auth, (req, res) => {
 Router.post('/apple', (req, res) => {
     let message: string = req.body.message;
     if(!message){

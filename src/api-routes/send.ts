@@ -10,13 +10,9 @@ import { sendSMS } from "../services/sms";
 require('dotenv').config()
 
 const Router = express.Router();
-Router.get('/', (req, res) => {
-    res.send("helloooo")
-})
-
 
 Router.post('/', async (req, res) =>
-    {        
+    {
         // extract channel from query parameters
         if(!req.body.channel){
             res.status(400).send("Channel not found!");
