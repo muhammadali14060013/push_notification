@@ -1,11 +1,10 @@
-// All the classes will be derived from Model if database is involved. Sequelize ORM will be used for DB connection
+// All the classes will be derived from Model if database is involved. Sequelize ORM will be used for DB connection.
 
 export class User{
     public email: string;
     public phone_number: string;
     public created_at: Date;
     public updated_at: Date;
-    // public static findByPk: (id: number) => Promise<UserI> //definition only - not overriding
 
     constructor(email?: string, phone_number?: string){
         if(email || phone_number){
@@ -19,17 +18,16 @@ export class User{
         
     }
     //when fetching from db, return type will be promise<User>
-    static findByPk(id: number): Promise<any>{
+    static findByPk(id: number){
+        return users.find(user => user.id == id)
+    }
+    static findAllPhoneNumbers(): Promise<string[]>{
+        
         return new Promise((resolve, reject) => {
-            let user = users.find(user => user.id == id)
-
-            if(user)
-                resolve(user)
-            else
-                reject(null)
+            let phone_numbers: string[] = users.filter(user => user.phone_number).map(u => u.phone_number ? u.phone_number : '');
+            resolve(phone_numbers);
         })
     }
-
 }
 // Adding user interface for sample data
 export interface UserI{
@@ -52,6 +50,19 @@ let users: UserI[] = [
     },
     {
         id: 3,
+        email: "muhammadaliee3@hotmail.com",
+    },
+    {
+        id: 4,
+        email: "muhammadaliee@hotmail.com",
+        phone_number: "00923218133334",
+    },
+    {
+        id: 5,
+        phone_number: "00923001234568",
+    },
+    {
+        id: 6,
         email: "muhammadaliee3@hotmail.com",
     }
 ]

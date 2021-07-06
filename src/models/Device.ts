@@ -17,14 +17,24 @@ export class Device {
         else
             throw new Error("Device token or/and User ID is missing!")
     }
-    static findByUserId(user_id: number): Promise<any>{
+    static findByUserId(user_id: number){
+        return devices.find(device => device.user_id == user_id);
+    }
+    static findAllAndroidDevices(): Promise<string[]>{
         return new Promise((resolve, reject) => {
-            let device = devices.find(device => device.user_id == user_id)
-
-            if(device)
-                resolve(device)
-            else
-                reject(null)
+            let android_tokens: string[] = devices.filter(device => device.platform == Platform.Android).map(dev => dev.device_token);
+            resolve(android_tokens);
+        })
+    }
+    static findAllAppleDevices(): Promise<string[]>{
+        return new Promise((resolve, reject) => {
+            let apple_tokens: string[] = devices.filter(device => device.platform == Platform.Apple).map(dev => dev.device_token);
+            resolve(apple_tokens);
+        })
+    }
+    static findAllDevices(): Promise<DeviceI[]>{
+        return new Promise((resolve, reject) => {
+            resolve(devices);
         })
     }
 }
@@ -54,7 +64,7 @@ let devices: DeviceI[] = [
         id: 2,
         user_id: 2,
         device_token: 'cdefghijklmn',
-        platform: Platform.Android
+        platform: Platform.Apple
     },
     {
         id: 3,
@@ -64,19 +74,19 @@ let devices: DeviceI[] = [
     },
     {
         id: 4,
-        user_id: 1,
+        user_id: 4,
         device_token: 'aabbccddeeff',
         platform: Platform.Apple
     },
     {
         id: 5,
-        user_id: 2,
+        user_id: 5,
         device_token: 'bbccdeeffgg',
         platform: Platform.Apple
     },
     {
         id: 6,
-        user_id: 3,
+        user_id: 7,
         device_token: 'ccdeeffgghh',
         platform: Platform.Apple
     }

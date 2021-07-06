@@ -4,7 +4,7 @@ const gcm = require('node-gcm');
 If fcm_server_key is valid, it will process further, otherwise will throw error 401
 */
 
-export function sendAndroid(devices: any[], message: string){
+export function sendAndroid(devices: any[], message: string): boolean{
     let sender = new gcm.Sender(process.env.FCM_SERVER_KEY);
     let gcmMessage = new gcm.Message();
     gcmMessage.addNotification("title", "You have received push notification!");

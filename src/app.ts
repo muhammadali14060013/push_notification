@@ -20,15 +20,6 @@ channel: nvarchar(255)  // push notification or SMS
 opt_in: boolean
 created_at: Date
 updated_at: Date
-
-notification_log
-id: int
-sender: nvarchar(255)
-receiver: nvarchar(MAX)
-channel: nvarchar(255)
-content: nvarchar(MAX)
-created_at: Date
-updated_at: Date
 */
 
 /* Discussion
@@ -47,25 +38,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(express.json())
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server started on port ${port}`));
-// app.get('/', (req, res) => {
-//     console.log(req.body.message);
-//     res.send('hl')
-// })
-// app.post('/', (req, res) => {
-//     console.log(req.body.message);
-//     console.log(req.query.id);
-//     res.send('hl')
-// })
+
+app.use(express.json());
 app.use('/', require('./api-routes/index'));
-
-// const httpServer = http.createServer(app);
-// httpServer.listen(port, () => {
-//   console.log(
-//     `🚀 Server ready at http://localhost:${port}`
-//   );
-// }).setTimeout(3000);
-

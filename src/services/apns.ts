@@ -4,7 +4,7 @@ const options = {};
 
 /* To test notifications, iOS app is required.
 */
-export function sendApple(devices: any[], message: string) {
+export function sendApple(devices: any[], message: string): boolean {
     return true;
 
     /* To test it, registered app is required */
