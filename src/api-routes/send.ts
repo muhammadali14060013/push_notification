@@ -9,15 +9,14 @@ require('dotenv').config()
 
 const Router = express.Router();
 
-Router.post('/sms', (req, res) => {
-    if(!req.query.id){
-        res.status(400).send("ID not found!");
-        return;
-    }
-    let id = req.query.id;
-    let user;
-    
-    user = User.findByPk(+id)
+/*  user(customer) id will be passed as url param.
+/*  message will be received in request body
+/*  if length of message > 2 and phone number of customer exists then SMS will be sent to customer */
+
+// Router.post('/sms/:id', auth2, (req, res) => {    // auth2 validates mustbeAdmin() || mustbeClient()
+Router.post('/sms/:id', (req, res) => {
+    let id = req.params.id;
+    let user = User.findByPk(+id)
     
     if(!user){
         res.status(404).send("User not found is database. Invalid ID!");
@@ -44,15 +43,15 @@ Router.post('/sms', (req, res) => {
     res.send("Successfully sent a message!");
 })
 
-Router.post('/android', (req, res) => {
-    if(!req.query.id){
-        res.status(400).send("ID not found!");
-        return;
-    }
-    let id = req.query.id;
-    let user;
-    
-    user = User.findByPk(+id)
+/*  user(customer) id will be passed as url param.
+/*  message will be received in request body
+/*  if length of message > 2, and platform of registered device for given id is android, 
+then push notification will be sent to customer */
+
+// Router.post('/android/:id', auth2, (req, res) => {    // auth2 validates mustbeAdmin() || mustbeClient()
+Router.post('/android/:id', (req, res) => {
+    let id = req.params.id;
+    let user = User.findByPk(+id)
     
     if(!user){
         res.status(404).send("User not found is database. Invalid ID!");
@@ -81,15 +80,15 @@ Router.post('/android', (req, res) => {
         res.status(401).send("Invalid platform is selected");
 })
 
-Router.post('/apple', (req, res) => {
-    if(!req.query.id){
-        res.status(400).send("ID not found!");
-        return;
-    }
-    let id = req.query.id;
-    let user;
-    
-    user = User.findByPk(+id)
+/*  user(customer) id will be passed as url param.
+/*  message will be received in request body
+/*  if length of message > 2, and platform of registered device for given id is apple, 
+then push notification will be sent to customer */
+
+// Router.post('/apple/:id', auth2, (req, res) => {    // auth2 validates mustbeAdmin() || mustbeClient()
+Router.post('/apple/:id', (req, res) => {
+    let id = req.params.id;
+    let user = User.findByPk(+id)
     
     if(!user){
         res.status(404).send("User not found is database. Invalid ID!");

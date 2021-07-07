@@ -10,15 +10,15 @@ const nexmo = new Nexmo({
 export function sendSMS(recipient: string, messageContent: string): boolean{
     let sender = process.env.YOUR_VIRTUAL_NUMBER ?? "Your Virtual Number";
     let status: boolean = true;
-    nexmo.message.sendSms(
-        sender, recipient, messageContent,
-        {type: 'unicode'},
-        (err, data) => {        
-            if(err)
-                status = false
-            else
-                status = true
-        }
-    )
+    // nexmo.message.sendSms(
+    //     sender, recipient, messageContent,
+    //     {type: 'unicode'},
+    //     (err, data) => {        
+    //         if(err)
+    //             status = false
+    //         else
+    //             status = true
+    //     }
+    // )
     return status;
 }

@@ -9,8 +9,12 @@ import { sendSMS } from "../services/sms";
 // import {auth} from "../middleware/auth"
 
 const Router = express.Router();
-/*Commented line is the representation when middleware is added*/
-// Router.post('/all-platforms', auth, (req, res) => {
+
+/* message will be received in request body
+/* if length of message > 2 and mobile devices exist, 
+then push notification will be sent to all the registered and subscribed devices */
+
+// Router.post('/all-platforms', auth, (req, res) => {  // auth validates mustbeAdmin()
 Router.post('/all-platforms', (req, res) => {
     let message: string = req.body.message;
     if(!message){
@@ -33,7 +37,11 @@ Router.post('/all-platforms', (req, res) => {
     })
 })
 
-// Router.post('/sms', auth, (req, res) => {
+/* message will be received in request body
+/* if length of message > 2 and phone numbers exist, 
+then SMS will be sent to all the registered and subscribed customer */
+
+// Router.post('/sms', auth, (req, res) => {    // auth validates mustbeAdmin()
 Router.post('/sms', (req, res) => {
     let message: string = req.body.message;
     if(!message){
@@ -57,7 +65,11 @@ Router.post('/sms', (req, res) => {
     });
 })
 
-// Router.post('/android', auth, (req, res) => {
+/* message will be received in request body
+/* if length of message > 2 and android devices exist, 
+then push notification will be sent to all the registered and subscribed android devices */
+
+// Router.post('/android', auth, (req, res) => {    // auth validates mustbeAdmin()
 Router.post('/android', (req, res) => {
     let message: string = req.body.message;
     if(!message){
@@ -79,7 +91,11 @@ Router.post('/android', (req, res) => {
     })
 })
 
-// Router.post('/apple', auth, (req, res) => {
+/* message will be received in request body
+/* if length of message > 2 and apple devices exist, 
+then push notification will be sent to all the registered and subscribed apple devices */
+
+// Router.post('/apple', auth, (req, res) => {    // auth validates mustbeAdmin()
 Router.post('/apple', (req, res) => {
     let message: string = req.body.message;
     if(!message){
