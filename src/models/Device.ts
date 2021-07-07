@@ -1,3 +1,4 @@
+import { Notification_Setting } from "./Notification_Setting";
 
 export class Device {
     public user_id!: number;
@@ -20,21 +21,30 @@ export class Device {
     static findByUserId(user_id: number){
         return devices.find(device => device.user_id == user_id);
     }
-    static findAllAndroidDevices(): Promise<string[]>{
+    static findAllSubscribedAndroidDevices(): Promise<string[]>{
+        let subscribed_users = Notification_Setting.findAllSubscribedUsers();
+        let android_devices = devices.filter(device => device.platform == Platform.Android);
+        android_devices = android_devices.filter(dev => subscribed_users.find(user => user == dev.user_id));        
         return new Promise((resolve, reject) => {
-            let android_tokens: string[] = devices.filter(device => device.platform == Platform.Android).map(dev => dev.device_token);
+            let android_tokens: string[] = android_devices.map(dev => dev.device_token);
             resolve(android_tokens);
         })
     }
-    static findAllAppleDevices(): Promise<string[]>{
+    static findAllSubscribedAppleDevices(): Promise<string[]>{
+        let subscribed_users = Notification_Setting.findAllSubscribedUsers();
+        let apple_devices = devices.filter(device => device.platform == Platform.Apple);
+        apple_devices = apple_devices.filter(dev => subscribed_users.find(user => user == dev.user_id));        
         return new Promise((resolve, reject) => {
-            let apple_tokens: string[] = devices.filter(device => device.platform == Platform.Apple).map(dev => dev.device_token);
-            resolve(apple_tokens);
+            let android_tokens: string[] = apple_devices.map(dev => dev.device_token);
+            resolve(android_tokens);
         })
     }
-    static findAllDevices(): Promise<DeviceI[]>{
+    static findAllSubscribedDevices(): Promise<DeviceI[]>{
+        let subscribed_users = Notification_Setting.findAllSubscribedUsers();
+        let filtered_devices = devices.filter(dev => subscribed_users.find(user => user == dev.user_id));
+        console.log('devices: ', filtered_devices);
         return new Promise((resolve, reject) => {
-            resolve(devices);
+            resolve(filtered_devices);
         })
     }
 }
@@ -64,7 +74,7 @@ let devices: DeviceI[] = [
         id: 2,
         user_id: 2,
         device_token: 'cdefghijklmn',
-        platform: Platform.Apple
+        platform: Platform.Android
     },
     {
         id: 3,
@@ -86,7 +96,7 @@ let devices: DeviceI[] = [
     },
     {
         id: 6,
-        user_id: 7,
+        user_id: 6,
         device_token: 'ccdeeffgghh',
         platform: Platform.Apple
     }

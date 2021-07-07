@@ -1,5 +1,7 @@
 // All the classes will be derived from Model if database is involved. Sequelize ORM will be used for DB connection.
 
+import { Notification_Setting } from "./Notification_Setting";
+
 export class User{
     public email: string;
     public phone_number: string;
@@ -21,13 +23,20 @@ export class User{
     static findByPk(id: number){
         return users.find(user => user.id == id)
     }
-    static findAllPhoneNumbers(): Promise<string[]>{
-        
+
+    static filterUsers(ids: number[]): UserI[]{
+        return users.filter(user => ids.find(id => id == user.id));
+    }
+
+    static findAllSubscribedPhoneNumbers(): Promise<string[]>{
+        let subscribed_users: number[] = Notification_Setting.findAllSubscribedUsers();
+        let filtered_users: UserI[] = this.filterUsers(subscribed_users);        
         return new Promise((resolve, reject) => {
-            let phone_numbers: string[] = users.filter(user => user.phone_number).map(u => u.phone_number ? u.phone_number : '');
+            let phone_numbers: string[] = filtered_users.filter(user => user.phone_number).map(u => u.phone_number ? u.phone_number : '');
             resolve(phone_numbers);
         })
     }
+
 }
 // Adding user interface for sample data
 export interface UserI{

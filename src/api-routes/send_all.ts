@@ -21,7 +21,7 @@ Router.post('/all-platforms', (req, res) => {
         res.status(400).send("Length of message is short!");
         return;
     }
-    Device.findAllDevices().then(devices => {
+    Device.findAllSubscribedDevices().then(devices => {
         let android_tokens: string[] = devices.filter(device => device.platform == Platform.Android).map(dev => dev.device_token);
         let apple_tokens: string[] = devices.filter(device => device.platform == Platform.Apple).map(dev => dev.device_token);
         if(sendApple(apple_tokens, message) && sendAndroid(android_tokens, message))
@@ -33,8 +33,8 @@ Router.post('/all-platforms', (req, res) => {
     })
 })
 
-// Router.post('/SMS', auth, (req, res) => {
-Router.post('/SMS', (req, res) => {
+// Router.post('/sms', auth, (req, res) => {
+Router.post('/sms', (req, res) => {
     let message: string = req.body.message;
     if(!message){
         res.status(400).send("Message not found!");
@@ -44,10 +44,10 @@ Router.post('/SMS', (req, res) => {
         res.status(400).send("Length of message is short!");
         return;
     }
-    User.findAllPhoneNumbers().then(nums => {
+    User.findAllSubscribedPhoneNumbers().then(nums => {
         nums.forEach(num => {
             if(num){
-                if(!sendSMS(process.env.YOUR_VIRTUAL_NUMBER ?? "Your Virtual Number", num, message)){
+                if(!sendSMS(num, message)){
                     res.status(403).send("Unable to send SMS.");
                     return;
                 }
@@ -69,7 +69,7 @@ Router.post('/android', (req, res) => {
         return;
     }
     
-    Device.findAllAndroidDevices().then(devices => {
+    Device.findAllSubscribedAndroidDevices().then(devices => {
         console.log(devices);
         
         if(sendAndroid(devices, message))
@@ -91,10 +91,10 @@ Router.post('/apple', (req, res) => {
         return;
     }
 
-    Device.findAllAppleDevices().then(devices => {
+    Device.findAllSubscribedAppleDevices().then(devices => {
         console.log(devices);
         if(sendApple(devices, message))
-            res.send("Bulk notification to Android sent successfully!");
+            res.send("Bulk notification to Apple devices sent successfully!");
         else
             res.status(401).send("Failed to send bulk notification!");
     })

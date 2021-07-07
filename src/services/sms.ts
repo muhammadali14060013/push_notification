@@ -7,7 +7,8 @@ const nexmo = new Nexmo({
     apiSecret: process.env.API_SECRET ? process.env.API_SECRET : ''
 });
 
-export function sendSMS(sender: string, recipient: string, messageContent: string): boolean{
+export function sendSMS(recipient: string, messageContent: string): boolean{
+    let sender = process.env.YOUR_VIRTUAL_NUMBER ?? "Your Virtual Number";
     let status: boolean = true;
     nexmo.message.sendSms(
         sender, recipient, messageContent,
